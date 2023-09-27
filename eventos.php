@@ -1,6 +1,6 @@
 <?php
 require_once 'clases/respuestas.class.php';
-require_once 'clases/pacientes.class.php';
+require_once 'clases/eventos.class.php';
 
 header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
@@ -9,19 +9,38 @@ header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Max-Age: 3600");
 
 $_respuestas = new respuestas;
-$_pacientes = new pacientes;
+$_eventos = new eventos;
 
 
 if($_SERVER['REQUEST_METHOD'] == "GET"){
 
     if(isset($_GET["page"])){
         $pagina = $_GET["page"];
-        $listaPacientes = $_pacientes->listaPacientes($pagina);
+        $listaPacientes = $_eventos->listaEventos($pagina);
         echo json_encode($listaPacientes);
         http_response_code(200);
-    }else if(isset($_GET['id'])){
+    }else if(isset($_GET['clasificadores'])){
+        $datos = $_eventos->obtenerClasificador();
+        header("Content-Type: application/json");
+        echo json_encode($datos);
+        http_response_code(200);
+    }
+    else if(isset($_GET['publicar'])){
+        header("Content-Type: application/json");
+        $pg = $_GET["publicar"];
+        $listaPacientes = $_eventos->publicarEvento($pg);
+        echo json_encode($listaPacientes);
+        http_response_code(200);
+    }else if(isset($_GET['evaluacion'])){
+        header("Content-Type: application/json");
+        $pg = $_GET["evaluacion"];
+        $listaPacientes = $_eventos->evaluacion($pg);
+        echo json_encode($listaPacientes);
+        http_response_code(200);
+    }
+    else if(isset($_GET['id'])){
         $pacienteid = $_GET['id'];
-        $datosPaciente = $_pacientes->obtenerPaciente($pacienteid);
+        $datosPaciente = $_eventos->obtenerPaciente($pacienteid);
         header("Content-Type: application/json");
         echo json_encode($datosPaciente);
         http_response_code(200);
@@ -31,7 +50,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
     //recibimos los datos enviados
     $postBody = file_get_contents("php://input");
     //enviamos los datos al manejador
-    $datosArray = $_pacientes->post($postBody);
+    $datosArray = $_eventos->post1($postBody);
     //delvovemos una respuesta 
      if(isset($datosArray["result"]["error_id"])){
          $responseCode = $datosArray["result"]["error_id"];
@@ -45,7 +64,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
       //recibimos los datos enviados
       $postBody = file_get_contents("php://input");
       //enviamos datos al manejador
-      $datosArray = $_pacientes->put($postBody);
+      $datosArray = $_eventos->put($postBody);
         //delvovemos una respuesta 
      header('Content-Type: application/json');
      if(isset($datosArray["result"]["error_id"])){
@@ -72,7 +91,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
         }
         
         //enviamos datos al manejador
-        $datosArray = $_pacientes->delete($postBody);
+        $datosArray = $_eventos->delete($postBody);
         //delvovemos una respuesta 
         header('Content-Type: application/json');
         if(isset($datosArray["result"]["error_id"])){

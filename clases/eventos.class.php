@@ -3,7 +3,7 @@ require_once "conexion/conexion.php";
 require_once "respuestas.class.php";
 
 
-class pacientes extends conexion {
+class eventos extends conexion {
 
     private $table = "pacientes";
     private $pacienteid = "";
@@ -15,6 +15,15 @@ class pacientes extends conexion {
     private $telefono = "";
     private $fechaNacimiento = "0000-00-00";
     private $correo = "";
+    private $id = "";
+    private $objeto = "";
+    private $descripcion = "";
+    private $moneda = "";
+    private $presupuesto = "";
+    private $fecha_inicio = "";
+    private $fecha_fin = "";
+    private $estado = "";
+    private $actividad = "";
     private $token = "";
 
     public function listaPacientes($pagina = 1){
@@ -27,6 +36,48 @@ class pacientes extends conexion {
         $query = "SELECT PacienteId,Nombre,DNI,Telefono,Correo FROM " . $this->table . " limit $inicio,$cantidad";
         $datos = parent::obtenerDatos($query);
         return ($datos);
+    }
+
+    public function obtenerClasificador(){
+        $query ="SELECT * FROM clasificador_bienes_y_servicios";
+        $resp = parent::obtenerDatos($query);
+        if($resp){
+             return $resp;
+        }else{
+            return 0;
+        }
+    }
+
+    public function listaEventos($pagina = 1){
+        $inicio  = 0 ;
+        $cantidad = 100;
+        if($pagina > 1){
+            $inicio = ($cantidad * ($pagina - 1)) +1 ;
+            $cantidad = $cantidad * $pagina;
+        }
+        $query = "SELECT id,objeto,descripcion,moneda,presupuesto,fecha_inicio,fecha_fin,estado,actividad FROM eventos limit $inicio,$cantidad";
+        $datos = parent::obtenerDatos($query);
+        return ($datos);
+    }
+
+    public function publicarEvento($pagina){
+        $query = "UPDATE eventos SET estado = 'PUBLICADO' WHERE id =".$pagina;
+        $resp = parent::nonQuery($query);
+        if($resp >= 1){
+             return $resp;
+        }else{
+            return 0;
+        };
+    }
+
+    public function evaluacion($pagina){
+        $query = "UPDATE eventos SET estado = 'EVALUACION' WHERE id =".$pagina;
+        $resp = parent::nonQuery($query);
+        if($resp >= 1){
+             return $resp;
+        }else{
+            return 0;
+        };
     }
 
     public function obtenerPaciente($id){
@@ -79,6 +130,57 @@ class pacientes extends conexion {
 
     }
 
+    public function post1($json){
+        $_respuestas = new respuestas;
+        $datos = json_decode($json,true);
+
+        if(!isset($datos['token'])){
+                return $_respuestas->error_401();
+        }else{
+            $this->token = $datos['token'];
+            $arrayToken =   $this->buscarToken();
+            if($arrayToken){
+
+                if(!isset($datos['objeto']) || !isset($datos['fecha_inicio']) || !isset($datos['fecha_fin'])){
+                    return $_respuestas->error_400();
+                }else{
+                    $this->objeto = $datos['objeto'];
+                    $this->descripcion = $datos['descripcion'];
+                    $this->moneda = $datos['moneda'];
+                    $this->presupuesto = $datos['presupuesto'];
+                    $this->fecha_inicio = $datos['fecha_inicio'];
+                    $this->fecha_fin = $datos['fecha_fin'];
+                    $this->actividad = $datos['actividad'];
+                    $this->estado = "ACTIVO";
+                    $resp = $this->insertarEvento();
+                    if($resp){
+                        $respuesta = $_respuestas->response;
+                        $respuesta["result"] = array(
+                            "pacienteId" => $resp
+                        );
+                        return $respuesta;
+                    }else{
+                        return $_respuestas->error_500();
+                    }
+                }
+
+            }else{
+                return $_respuestas->error_401("El Token que envio es invalido o ha caducado");
+            }
+        }
+    }
+
+    private function insertarEvento(){
+        $query = "INSERT INTO eventos (objeto,descripcion,moneda,presupuesto,fecha_inicio,fecha_fin,estado,actividad)
+        values
+        ('" . $this->objeto . "','" . $this->descripcion . "','" . $this->moneda ."','" . $this->presupuesto . "','"  . $this->fecha_inicio . "','" . $this->fecha_fin . "','" . $this->estado . "','" . $this->actividad . "')"; 
+        $resp = parent::nonQueryId($query);
+        if($resp){
+             return $resp;
+        }else{
+            return 0;
+        }
+    }
 
     private function insertarPaciente(){
         $query = "INSERT INTO " . $this->table . " (DNI,Nombre,Direccion,CodigoPostal,Telefono,Genero,FechaNacimiento,Correo)

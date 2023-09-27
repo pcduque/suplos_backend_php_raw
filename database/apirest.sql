@@ -38,14 +38,41 @@ CREATE TABLE `citas` (
   `Motivo` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+CREATE TABLE `eventos` (
+  `id` INT(100) NOT NULL AUTO_INCREMENT , 
+  `objeto` TEXT NOT NULL , 
+  `descripcion` TEXT NOT NULL , 
+  `moneda` TEXT NOT NULL , 
+  `presupuesto` INT NOT NULL , 
+  `fecha_inicio` TIMESTAMP NULL DEFAULT NULL , 
+  `fecha_fin` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) 
+  ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
+
+  ALTER TABLE `eventos` ADD actividad TEXT;
+
+  ALTER TABLE `eventos` ADD estado TEXT
+
+
+CREATE TABLE `clasificador_bienes_y_servicios` (
+  `codigo_segmento` TEXT NOT NULL , 
+  `nombre_segmento` TEXT NOT NULL , 
+  `codigo_familia` TEXT NOT NULL , 
+  `nombre_familia` TEXT NOT NULL , `
+  codigo_clase` TEXT NOT NULL , 
+  `nombre_clase` TEXT NOT NULL , 
+  `codigo_producto` TEXT NOT NULL , 
+  `nombre_producto` TEXT NOT NULL ) 
+  ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
--- Volcado de datos para la tabla `citas`
+-- Volcado de datos para la tabla `eventos`
 --
 
-INSERT INTO `citas` (`CitaId`, `PacienteId`, `Fecha`, `HoraInicio`, `HoraFIn`, `Estado`, `Motivo`) VALUES
-(1, '1', '2020-06-09', '08:30:00', '09:00:00', 'Confirmada', 'El paciente presenta un leve dolor de espalda'),
-(2, '2', '2020-06-10', '08:30:00', '09:00:00', 'Confirmada', 'Dolor en la zona lumbar '),
-(3, '3', '2020-06-18', '09:00:00', '09:30:00', 'Confirmada', 'Dolor en el cuello');
+INSERT INTO `eventos` ( `objeto`, `descripcion`, `moneda`, `presupuesto`, `fecha_inicio`, `fecha_fin`, `actividad`, `estado`) VALUES
+('A00005', 'Medico especielista en Zootecnia', 'COP', '150000', '2020-06-09 08:30:00', '2020-06-09 08:30:00', 'Animales vivos - Animales de Granja - Gatos', 'ACTIVO'),
+('B00005', 'Medico Cirujano', 'COP', '150000', '2020-06-09 08:30:00', '2020-06-09 08:30:00', 'Animales vivos - Animales de Granja - Gatos', 'ACTIVO'),
+('C00005', 'Psicologo especializado en animales', 'COP', '150000', '2020-06-09 08:30:00', '2020-06-09 08:30:00', 'Animales vivos - Animales de Granja - Gatos', 'ACTIVO');
 
 -- --------------------------------------------------------
 

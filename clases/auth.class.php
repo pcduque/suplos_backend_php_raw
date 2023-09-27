@@ -10,7 +10,7 @@ class auth extends conexion{
         $_respustas = new respuestas;
         $datos = json_decode($json,true);
         if(!isset($datos['usuario']) || !isset($datos["password"])){
-            //error con los campos
+            //error con los campos, user o pass incorrectos
             return $_respustas->error_400();
         }else{
             //todo esta bien 
@@ -62,7 +62,7 @@ class auth extends conexion{
         }
     }
 
-
+    //generar token
     private function insertarToken($usuarioid){
         $val = true;
         $token = bin2hex(openssl_random_pseudo_bytes(16,$val));
