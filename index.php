@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API - Prubebas</title>
+    <title>API - Supplos</title>
     <link rel="stylesheet" href="assets/estilo.css" type="text/css">
 </head>
 <body>
@@ -26,31 +26,31 @@
         </code>
     </div>      
     <div class="divbody">   
-        <h3>Pacientes</h3>
+        <h3>Eventos</h3>
         <code>
-           GET  /pacientes?page=$numeroPagina
+           GET  /eventos?page=$numeroPagina
            <br>
-           GET  /pacientes?id=$idPaciente
+           GET  /eventos?id=$idPaciente
         </code>
 
         <code>
-           POST  /pacientes
+           POST  /eventos
            <br> 
            {
             <br> 
-               "nombre" : "",               -> REQUERIDO
+               "objeto" : "",               -> REQUERIDO
                <br> 
-               "dni" : "",                  -> REQUERIDO
+               "descripcion" : "",                  -> REQUERIDO
                <br> 
-               "correo":"",                 -> REQUERIDO
+               "moneda":"",                 -> REQUERIDO
                <br> 
-               "codigoPostal" :"",             
+               "presupuesto" :"",             
                <br>  
-               "genero" : "",        
+               "fecha_inicio" : "",        
                <br>        
-               "telefono" : "",       
+               "fehca_fin" : "",       
                <br>       
-               "fechaNacimiento" : "",      
+               "estado" : "",      
                <br>         
                "token" : ""                 -> REQUERIDO        
                <br>       
@@ -62,23 +62,23 @@
            <br> 
            {
             <br> 
-               "nombre" : "",               
+               "objeto" : "",               -> REQUERIDO
                <br> 
-               "dni" : "",                  
+               "descripcion" : "",                  -> REQUERIDO
                <br> 
-               "correo":"",                 
+               "moneda":"",                 -> REQUERIDO
                <br> 
-               "codigoPostal" :"",             
+               "presupuesto" :"",             
                <br>  
-               "genero" : "",        
+               "fecha_inicio" : "",        
                <br>        
-               "telefono" : "",       
+               "fehca_fin" : "",       
                <br>       
-               "fechaNacimiento" : "",      
+               "estado" : "",      
                <br>         
-               "token" : "" ,                -> REQUERIDO        
-               <br>       
-               "pacienteId" : ""   -> REQUERIDO
+               "token" : ""                 -> REQUERIDO        
+               <br>         
+               "id" : ""   -> REQUERIDO
                <br>
            }
 
@@ -90,7 +90,7 @@
                <br>    
                "token" : "",                -> REQUERIDO        
                <br>       
-               "pacienteId" : ""   -> REQUERIDO
+               "id" : ""   -> REQUERIDO
                <br>
            }
 

@@ -69,11 +69,17 @@ CREATE TABLE `clasificador_bienes_y_servicios` (
 -- Volcado de datos para la tabla `eventos`
 --
 
-INSERT INTO `eventos` ( `objeto`, `descripcion`, `moneda`, `presupuesto`, `fecha_inicio`, `fecha_fin`, `actividad`, `estado`) VALUES
+INSERT INTO `eventos` (`objeto`, `descripcion`, `moneda`, `presupuesto`, `fecha_inicio`, `fecha_fin`, `actividad`, `estado` ) VALUES
 ('A00005', 'Medico especielista en Zootecnia', 'COP', '150000', '2020-06-09 08:30:00', '2020-06-09 08:30:00', 'Animales vivos - Animales de Granja - Gatos', 'ACTIVO'),
 ('B00005', 'Medico Cirujano', 'COP', '150000', '2020-06-09 08:30:00', '2020-06-09 08:30:00', 'Animales vivos - Animales de Granja - Gatos', 'ACTIVO'),
 ('C00005', 'Psicologo especializado en animales', 'COP', '150000', '2020-06-09 08:30:00', '2020-06-09 08:30:00', 'Animales vivos - Animales de Granja - Gatos', 'ACTIVO');
 
+INSERT INTO `clasificador_bienes_y_servicios` (`codigo_semento`, `nombre_segmento`, `codigo_familia`, `nombre_familia`, `codigo_clase`, `nombre_clase`, `codigo_producto`, `nombre_producto`) VALUES
+('0', 'material vivo vegetal y animal', '1001', 'animales vivos', '3025', 'animales de granja', 'Animales vivos - Animales de Granja - Gatos', 'ovejas'),
+('1', 'material vivo vegetal y animal', '1001', 'animales vivos', '3205', 'animales de granja', 'Animales vivos - Animales de Granja - Gatos', 'perros'),
+('2', 'material vivo vegetal y animal', '1001', 'suministros de animales', '2525', 'animales de granja', 'Animales vivos - Animales de Granja - Gatos' 'gatos');
+
+-- -
 -- --------------------------------------------------------
 
 --
